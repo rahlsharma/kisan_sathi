@@ -2,14 +2,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Language, ChatMessage } from '../types';
 import { TRANSLATIONS } from '../constants';
-import { Send, Mic, User, Bot, Loader2 } from 'lucide-react';
+import { Send, Mic, User, Bot, Loader2, StopCircle } from 'lucide-react';
 import { getGeminiResponse } from '../services/gemini';
 
 interface ChatProps {
   language: Language;
+  initialPrompt?: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ language }) => {
+const Chat: React.FC<ChatProps> = ({ language, initialPrompt }) => {
   const t = TRANSLATIONS[language].chat;
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -21,7 +22,9 @@ const Chat: React.FC<ChatProps> = ({ language }) => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -29,13 +32,24 @@ const Chat: React.FC<ChatProps> = ({ language }) => {
     }
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!inputValue.trim() || isLoading) return;
+  // Handle pre-filled prompt
+  useEffect(() => {
+    if (initialPrompt) {
+      setInputValue(initialPrompt);
+      // Wait a tiny bit for UI to settle then send
+      const timer = setTimeout(() => handleSend(initialPrompt), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [initialPrompt]);
+
+  const handleSend = async (textOverride?: string) => {
+    const text = textOverride || inputValue;
+    if (!text.trim() || isLoading) return;
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
-      content: inputValue,
+      content: text,
       timestamp: Date.now(),
     };
 
@@ -44,7 +58,7 @@ const Chat: React.FC<ChatProps> = ({ language }) => {
     setIsLoading(true);
 
     try {
-      const response = await getGeminiResponse(inputValue, language);
+      const response = await getGeminiResponse(text, language);
       const aiMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -56,6 +70,37 @@ const Chat: React.FC<ChatProps> = ({ language }) => {
       console.error(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const startListening = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Voice recognition is not supported in your browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = language === 'hi' ? 'hi-IN' : language === 'ta' ? 'ta-IN' : language === 'te' ? 'te-IN' : language === 'kn' ? 'kn-IN' : 'en-IN';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setInputValue(transcript);
+      // Trigger send automatically after short delay
+      setTimeout(() => handleSend(transcript), 1000);
+    };
+
+    recognition.start();
+    recognitionRef.current = recognition;
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
     }
   };
 
@@ -112,19 +157,22 @@ const Chat: React.FC<ChatProps> = ({ language }) => {
       {/* Input Area */}
       <div className="p-4 bg-white border-t border-slate-100 pb-8">
         <div className="flex items-center gap-2 bg-slate-100 rounded-2xl px-4 py-2">
-          <button className="text-slate-400 hover:text-emerald-600">
-            <Mic size={20} />
+          <button 
+            onClick={isListening ? stopListening : startListening}
+            className={`transition-colors ${isListening ? 'text-rose-500 animate-pulse' : 'text-slate-400 hover:text-emerald-600'}`}
+          >
+            {isListening ? <StopCircle size={20} /> : <Mic size={20} />}
           </button>
           <input 
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={t.placeholder}
+            placeholder={isListening ? "Listening..." : t.placeholder}
             className="flex-1 bg-transparent border-none outline-none text-sm py-2"
           />
           <button 
-            onClick={handleSend}
+            onClick={() => handleSend()}
             disabled={!inputValue.trim() || isLoading}
             className={`p-2 rounded-xl transition-colors ${
               inputValue.trim() ? 'bg-emerald-600 text-white' : 'text-slate-300'
