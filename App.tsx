@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { AppView, Language, UserProfile, WeatherData, Notification } from './types';
-import { TRANSLATIONS, LANGUAGES } from './constants';
+import { TRANSLATIONS } from './constants';
 import Layout from './components/Layout';
 import Dashboard from './views/Dashboard';
 import Chat from './views/Chat';
 import CropDoctor from './views/CropDoctor';
 import MarketRates from './views/MarketRates';
+import Marketplace from './views/Marketplace';
 import Schemes from './views/Schemes';
 import Onboarding from './views/Onboarding';
 import Auth from './views/Auth';
@@ -139,6 +140,8 @@ const App: React.FC = () => {
         return <CropDoctor language={language} />;
       case AppView.MARKET:
         return <MarketRates language={language} location={userProfile?.location} />;
+      case AppView.MARKETPLACE:
+        return <Marketplace language={language} userProfile={userProfile} />;
       case AppView.SCHEMES:
         return <Schemes language={language} userProfile={userProfile} />;
       case AppView.SETTINGS:

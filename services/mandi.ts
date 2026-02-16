@@ -14,17 +14,31 @@ export interface MandiRecord {
   modal_price: string;
 }
 
-export const fetchLiveMandiRates = async (commodity?: string, state?: string): Promise<MandiRecord[]> => {
+export interface MandiFilters {
+  commodity?: string;
+  state?: string;
+  district?: string;
+  market?: string;
+}
+
+export const fetchLiveMandiRates = async (filters: MandiFilters = {}): Promise<MandiRecord[]> => {
   try {
-    let url = `https://api.data.gov.in/resource/${RESOURCE_ID}?api-key=${MANDI_API_KEY}&format=json&limit=20`;
+    let url = `https://api.data.gov.in/resource/${RESOURCE_ID}?api-key=${MANDI_API_KEY}&format=json&limit=50`;
     
-    if (commodity) {
-      url += `&filters[commodity]=${encodeURIComponent(commodity)}`;
+    if (filters.commodity) {
+      url += `&filters[commodity]=${encodeURIComponent(filters.commodity)}`;
     }
-    if (state) {
-      url += `&filters[state]=${encodeURIComponent(state)}`;
+    if (filters.state) {
+      url += `&filters[state]=${encodeURIComponent(filters.state)}`;
+    }
+    if (filters.district) {
+      url += `&filters[district]=${encodeURIComponent(filters.district)}`;
+    }
+    if (filters.market) {
+      url += `&filters[market]=${encodeURIComponent(filters.market)}`;
     }
 
+    // Default sorting by arrival date if supported, though usually records are fresh
     const response = await fetch(url);
     const data = await response.json();
 

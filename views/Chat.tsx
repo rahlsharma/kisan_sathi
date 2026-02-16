@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Language, ChatMessage } from '../types';
 import { TRANSLATIONS } from '../constants';
@@ -169,7 +168,7 @@ const Chat: React.FC<ChatProps> = ({ language, initialPrompt }) => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             placeholder={isListening ? "Listening..." : t.placeholder}
-            className="flex-1 bg-transparent border-none outline-none text-sm py-2"
+            className="flex-1 bg-transparent border-none outline-none text-sm text-slate-900 py-2"
           />
           <button 
             onClick={() => handleSend()}
@@ -178,6 +177,7 @@ const Chat: React.FC<ChatProps> = ({ language, initialPrompt }) => {
               inputValue.trim() ? 'bg-emerald-600 text-white' : 'text-slate-300'
             }`}
           >
+            <span className="sr-only">Send</span>
             <Send size={20} />
           </button>
         </div>

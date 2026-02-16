@@ -2,7 +2,7 @@
 import React from 'react';
 import { AppView, Language } from '../types';
 import { TRANSLATIONS } from '../constants';
-import { Home, MessageCircle, Stethoscope, BarChart3 } from 'lucide-react';
+import { Home, MessageCircle, Stethoscope, BarChart3, ShoppingBag } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,6 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setActiveView, la
 
   const navItems = [
     { id: AppView.DASHBOARD, icon: Home, label: t.home },
+    { id: AppView.MARKETPLACE, icon: ShoppingBag, label: t.sell },
     { id: AppView.CHAT, icon: MessageCircle, label: t.chat },
     { id: AppView.CROP_DOCTOR, icon: Stethoscope, label: t.doctor },
     { id: AppView.MARKET, icon: BarChart3, label: t.market },
@@ -44,14 +45,14 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setActiveView, la
               <button
                 key={item.id}
                 onClick={() => setActiveView(item.id)}
-                className={`flex flex-col items-center gap-1.5 min-w-[64px] transition-all duration-300 active:scale-90 ${
+                className={`flex flex-col items-center gap-1.5 min-w-[56px] transition-all duration-300 active:scale-90 ${
                   isActive ? 'text-emerald-600' : 'text-slate-400'
                 }`}
               >
                 <div className={`p-1.5 rounded-xl transition-colors ${isActive ? 'bg-emerald-50' : ''}`}>
-                  <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                  <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
                 </div>
-                <span className={`text-[11px] font-bold tracking-tight ${isActive ? 'opacity-100' : 'opacity-60'}`}>
+                <span className={`text-[10px] font-bold tracking-tight ${isActive ? 'opacity-100' : 'opacity-60'}`}>
                   {item.label}
                 </span>
                 {isActive && (

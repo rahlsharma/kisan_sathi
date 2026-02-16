@@ -2,7 +2,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Language } from "../types";
 
-// The API key is obtained from process.env.API_KEY
 const getAIClient = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getGeminiResponse = async (prompt: string, language: Language) => {
@@ -93,25 +92,57 @@ export const getMarketUpdates = async (query: string, location: string, language
 export const getGovernmentSchemes = async (location: string, crops: string[], language: Language) => {
   const ai = getAIClient();
   try {
-    const prompt = `Search for the latest active government agricultural schemes, subsidies, and insurance for a farmer in ${location} growing ${crops.join(', ')}. Provide a list with the name of the scheme, a brief description, and the official website URL. Respond in ${language}.`;
+    const prompt = `Search for the latest active Central Government of India agricultural schemes (such as PM-Kisan, PM Fasal Bima Yojana - PMFBY, e-NAM, Pradhan Mantri Krishi Sinchai Yojana - PMKSY, Soil Health Card Scheme, and National Mission for Sustainable Agriculture) along with relevant state-specific benefits for a farmer in ${location} growing ${crops.join(', ')}. 
+
+    IMPORTANT: ALWAYS prioritize and list the major Central Government schemes first as they are the most beneficial for farmers nationwide. 
+
+    Return the response in ${language} as a JSON object with a 'summary' string (briefly explaining why these schemes are the best for the user) and a 'schemes' array.
+    Each scheme object MUST have: 'name', 'description', 'category' (Must be one of: "Subsidy", "Loan", "Insurance", "Training", "Other"), 'url', 'eligibility' (string array), and 'steps' (string array).`;
     
     const response = await ai.models.generateContent({
       model: 'gemini-3-pro-preview',
       contents: prompt,
       config: {
         tools: [{googleSearch: {}}],
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            summary: { type: Type.STRING },
+            schemes: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  name: { type: Type.STRING },
+                  description: { type: Type.STRING },
+                  category: { type: Type.STRING },
+                  url: { type: Type.STRING },
+                  eligibility: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING }
+                  },
+                  steps: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING }
+                  }
+                },
+                required: ["name", "description", "category", "url", "eligibility", "steps"]
+              }
+            }
+          },
+          required: ["summary", "schemes"]
+        }
       },
     });
 
+    const parsed = JSON.parse(response.text || '{"summary": "", "schemes": []}');
     return {
-      text: response.text,
-      sources: response.candidates?.[0]?.groundingMetadata?.groundingChunks?.map((chunk: any) => ({
-        title: chunk.web?.title,
-        url: chunk.web?.uri
-      })).filter((s: any) => s.url) || []
+      text: parsed.summary,
+      schemes: parsed.schemes
     };
   } catch (error) {
     console.error("Schemes Fetch Error:", error);
-    return { text: "Failed to fetch schemes.", sources: [] };
+    return { text: "Failed to fetch schemes.", schemes: [] };
   }
 };

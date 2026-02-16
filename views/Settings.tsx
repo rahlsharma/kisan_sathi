@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Language, UserProfile, AppView } from '../types';
 import { TRANSLATIONS, LANGUAGES } from '../constants';
@@ -69,7 +68,7 @@ const Settings: React.FC<SettingsProps> = ({
                 type="text"
                 value={formData.name}
                 onChange={e => setFormData({ ...formData, name: e.target.value })}
-                className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm focus:ring-2 focus:ring-emerald-500/20"
+                className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
               />
             </div>
 
@@ -79,7 +78,7 @@ const Settings: React.FC<SettingsProps> = ({
                 type="text"
                 value={formData.location}
                 onChange={e => setFormData({ ...formData, location: e.target.value })}
-                className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm focus:ring-2 focus:ring-emerald-500/20"
+                className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
               />
             </div>
 
@@ -90,7 +89,7 @@ const Settings: React.FC<SettingsProps> = ({
                   type="number"
                   value={formData.landSize}
                   onChange={e => setFormData({ ...formData, landSize: e.target.value })}
-                  className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm focus:ring-2 focus:ring-emerald-500/20"
+                  className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
                 />
               </div>
               <div className="space-y-1">
@@ -99,7 +98,7 @@ const Settings: React.FC<SettingsProps> = ({
                   type="text"
                   value={cropsInput}
                   onChange={e => setCropsInput(e.target.value)}
-                  className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm focus:ring-2 focus:ring-emerald-500/20"
+                  className="w-full bg-slate-50 border-none rounded-xl py-3 px-4 text-sm text-slate-900 focus:ring-2 focus:ring-emerald-500/20"
                 />
               </div>
             </div>

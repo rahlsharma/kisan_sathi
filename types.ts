@@ -13,7 +13,7 @@ export interface Notification {
   id: string;
   title: string;
   message: string;
-  type: 'weather' | 'market' | 'scheme';
+  type: 'weather' | 'market' | 'scheme' | 'sell';
   timestamp: number;
   read: boolean;
 }
@@ -40,6 +40,7 @@ export interface TranslationStrings {
     govSchemes: string;
     cropDoctor: string;
     forecast: string;
+    directSell: string;
   };
   settings: {
     title: string;
@@ -68,6 +69,16 @@ export interface TranslationStrings {
     price: string;
     location: string;
   };
+  marketplace: {
+    title: string;
+    subtitle: string;
+    sellTitle: string;
+    buyTitle: string;
+    listButton: string;
+    pricePerUnit: string;
+    quantity: string;
+    companyDemands: string;
+  };
   schemes: {
     title: string;
     explore: string;
@@ -77,6 +88,7 @@ export interface TranslationStrings {
     chat: string;
     doctor: string;
     market: string;
+    sell: string;
   };
 }
 
@@ -87,6 +99,7 @@ export enum AppView {
   CHAT = 'chat',
   CROP_DOCTOR = 'crop_doctor',
   MARKET = 'market',
+  MARKETPLACE = 'marketplace',
   SCHEMES = 'schemes',
   NOTIFICATIONS = 'notifications',
   SETTINGS = 'settings'

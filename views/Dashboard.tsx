@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Language, WeatherData, AppView, UserProfile, Notification } from '../types';
 import { TRANSLATIONS } from '../constants';
-import { CloudSun, Mic, Stethoscope, BarChart3, BookOpen, AlertCircle, Bell, X, Settings } from 'lucide-react';
+import { CloudSun, Mic, Stethoscope, BarChart3, BookOpen, AlertCircle, Bell, X, Settings, ShoppingBag } from 'lucide-react';
 
 interface DashboardProps {
   language: Language;
@@ -89,6 +89,24 @@ const Dashboard: React.FC<DashboardProps> = ({ language, weather, userProfile, n
           </div>
         </div>
       </section>
+
+      {/* Direct Sell Prominent Action */}
+      <button 
+        onClick={() => onAction(AppView.MARKETPLACE)}
+        className="w-full bg-slate-900 rounded-[2.5rem] p-6 flex items-center justify-between shadow-xl group relative overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/20 to-transparent"></div>
+        <div className="flex items-center gap-5 relative z-10">
+          <div className="bg-white/10 p-4 rounded-full text-white backdrop-blur-md group-hover:scale-110 transition-transform">
+            <ShoppingBag size={32} className="text-emerald-400" />
+          </div>
+          <div className="text-left">
+            <p className="text-xl font-black text-white tracking-tight">{t.directSell}</p>
+            <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">No Middlemen • Direct Rates</p>
+          </div>
+        </div>
+        <ShoppingBag size={24} className="text-white/20 relative z-10" />
+      </button>
 
       {/* Primary Voice Action */}
       <button 

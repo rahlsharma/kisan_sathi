@@ -24,7 +24,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       marketRates: "Mandi Rates",
       govSchemes: "Govt Schemes",
       cropDoctor: "Crop Doctor",
-      forecast: "3-Day Forecast"
+      forecast: "3-Day Forecast",
+      directSell: "Direct Sell"
     },
     settings: {
       title: "Settings",
@@ -53,6 +54,16 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       price: "Rate/Quintal",
       location: "Market"
     },
+    marketplace: {
+      title: "Marketplace",
+      subtitle: "Sell directly to companies",
+      sellTitle: "List Your Crop",
+      buyTitle: "Open Demands",
+      listButton: "List for Sale",
+      pricePerUnit: "Price/Qtl",
+      quantity: "Quantity",
+      companyDemands: "Top Company Offers"
+    },
     schemes: {
       title: "Government Schemes",
       explore: "Explore Benefits"
@@ -61,7 +72,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       home: "Home",
       chat: "Chat",
       doctor: "Doctor",
-      market: "Market"
+      market: "Market",
+      sell: "Sell"
     }
   },
   hi: {
@@ -85,7 +97,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       marketRates: "मंडी भाव",
       govSchemes: "सरकारी योजनाएं",
       cropDoctor: "फसल डॉक्टर",
-      forecast: "3-दिन का पूर्वानुमान"
+      forecast: "3-दिन का पूर्वानुमान",
+      directSell: "सीधी बिक्री"
     },
     settings: {
       title: "सेटिंग्स",
@@ -114,6 +127,16 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       price: "दर/क्विंटल",
       location: "बाजार"
     },
+    marketplace: {
+      title: "बाजार स्थान",
+      subtitle: "कंपनियों को सीधे बेचें",
+      sellTitle: "अपनी फसल सूचीबद्ध करें",
+      buyTitle: "खुली मांग",
+      listButton: "बिक्री के लिए डालें",
+      pricePerUnit: "मूल्य/क्विंटल",
+      quantity: "मात्रा",
+      companyDemands: "प्रमुख कंपनी ऑफर"
+    },
     schemes: {
       title: "सरकारी योजनाएं",
       explore: "लाभ देखें"
@@ -122,7 +145,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       home: "मुख्य",
       chat: "चैट",
       doctor: "डॉक्टर",
-      market: "बाजार"
+      market: "बाजार",
+      sell: "बेचें"
     }
   },
   ta: {
@@ -146,7 +170,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       marketRates: "மண்டி விலைகள்",
       govSchemes: "அரசு திட்டங்கள்",
       cropDoctor: "பயிர் மருத்துவர்",
-      forecast: "3 நாள் முன்னறிவிப்பு"
+      forecast: "3 நாள் முன்னறிவிப்பு",
+      directSell: "நேரடி விற்பனை"
     },
     settings: {
       title: "அமைப்புகள்",
@@ -175,6 +200,16 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       price: "விலை/குவிண்டால்",
       location: "சந்தை"
     },
+    marketplace: {
+      title: "சந்தை",
+      subtitle: "நிறுவனங்களுக்கு நேரடியாக விற்கவும்",
+      sellTitle: "பயிரை பட்டியலிடு",
+      buyTitle: "தேவைகள்",
+      listButton: "விற்பனைக்கு இடு",
+      pricePerUnit: "விலை/குவிண்டால்",
+      quantity: "அளவு",
+      companyDemands: "நிறுவன சலுகைகள்"
+    },
     schemes: {
       title: "அரசு திட்டங்கள்",
       explore: "பலன்களை ஆராயுங்கள்"
@@ -183,7 +218,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       home: "முகப்பு",
       chat: "அரட்டை",
       doctor: "மருத்துவர்",
-      market: "சந்தை"
+      market: "சந்தை",
+      sell: "விற்க"
     }
   },
   te: {
@@ -207,7 +243,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       marketRates: "మార్కెట్ ధరలు",
       govSchemes: "ప్రభుత్వ పథకాలు",
       cropDoctor: "పంట డాక్టర్",
-      forecast: "3 రోజుల వాతావరణం"
+      forecast: "3 రోజుల వాతావరణం",
+      directSell: "నేరుగా అమ్మండి"
     },
     settings: {
       title: "సెట్టింగులు",
@@ -236,6 +273,16 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       price: "ధర/క్వింటాల్",
       location: "మార్కెట్"
     },
+    marketplace: {
+      title: "మార్కెట్",
+      subtitle: "కంపెనీలకు నేరుగా అమ్మండి",
+      sellTitle: "పంట జాబితా చేయండి",
+      buyTitle: "డిమాండ్లు",
+      listButton: "అమ్మకానికి పెట్టండి",
+      pricePerUnit: "ధర/క్వింటాల్",
+      quantity: "పరిమాణం",
+      companyDemands: "కంపెనీ ఆఫర్లు"
+    },
     schemes: {
       title: "ప్రభుత్వ పథకాలు",
       explore: "ప్రయోజనాలను చూడండి"
@@ -244,7 +291,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       home: "హోమ్",
       chat: "చాట్",
       doctor: "డాక్టర్",
-      market: "మార్కెట్"
+      market: "మార్కెట్",
+      sell: "అమ్మండి"
     }
   },
   kn: {
@@ -268,7 +316,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       marketRates: "ಮಾರುಕಟ್ಟೆ ದರಗಳು",
       govSchemes: "ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು",
       cropDoctor: "ಬೆಳೆ ವೈದ್ಯ",
-      forecast: "3 ದಿನಗಳ ಮುನ್ಸೂಚನೆ"
+      forecast: "3 ದಿನಗಳ ಮುನ್ಸೂಚನೆ",
+      directSell: "ನೇರ ಮಾರಾಟ"
     },
     settings: {
       title: "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
@@ -288,7 +337,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       description: "ರೋಗಗಳನ್ನು ಗುರುತಿಸಲು ಎಲೆಯ ಫೋಟೋ ತೆಗೆದುಕೊಳ್ಳಿ",
       uploadLabel: "ಎಲೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
       analyzing: "AI ವಿಲೇಷಿಸುತ್ತಿದೆ...",
-      diagnosis: "AI ರೋಗನಿರ್ಣಯ",
+      diagnosis: "AI ರೋಗನಿರ್ಣย",
       treatment: "ಚಿಕಿತ್ಸಾ ಕ್ರಮಗಳು"
     },
     market: {
@@ -296,6 +345,16 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       commodity: "ಸರಕು",
       price: "ದರ/ಕ್ವಿಂಟಲ್",
       location: "ಮಾರುಕಟ್ಟೆ"
+    },
+    marketplace: {
+      title: "ಮಾರುಕಟ್ಟೆ",
+      subtitle: "ಕಂಪನಿಗಳಿಗೆ ನೇರವಾಗಿ ಮಾರಿ",
+      sellTitle: "ಬೆಳೆ ಪಟ್ಟಿ ಮಾಡಿ",
+      buyTitle: "ಬೇಡಿಕೆಗಳು",
+      listButton: "ಮಾರಾಟಕ್ಕಿಡಿ",
+      pricePerUnit: "ಬೆಲೆ/ಕ್ವಿಂಟಲ್",
+      quantity: "ಪ್ರಮಾಣ",
+      companyDemands: "ಕಂಪನಿ ಕೊಡುಗೆಗಳು"
     },
     schemes: {
       title: "ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು",
@@ -305,7 +364,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       home: "ಮುಖಪುಟ",
       chat: "ಚಾಟ್",
       doctor: "ವೈದ್ಯ",
-      market: "ಮಾರುಕಟ್ಟೆ"
+      market: "ಮಾರುಕಟ್ಟೆ",
+      sell: "ಮಾರಿ"
     }
   }
 };
