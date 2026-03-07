@@ -2,14 +2,15 @@
 import React, { useState } from 'react';
 import { Language, UserProfile } from '../types';
 import { TRANSLATIONS } from '../constants';
-import { User, MapPin, LandPlot, Sprout } from 'lucide-react';
+import { User, MapPin, LandPlot, Sprout, Loader2, Cloud } from 'lucide-react';
 
 interface AuthProps {
   language: Language;
   onRegister: (profile: UserProfile) => void;
+  isLoading?: boolean;
 }
 
-const Auth: React.FC<AuthProps> = ({ language, onRegister }) => {
+const Auth: React.FC<AuthProps> = ({ language, onRegister, isLoading = false }) => {
   const t = TRANSLATIONS[language].auth;
   const [formData, setFormData] = useState<UserProfile>({
     name: '',
@@ -21,7 +22,7 @@ const Auth: React.FC<AuthProps> = ({ language, onRegister }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.location) {
+    if (formData.name && formData.location && !isLoading) {
       onRegister({
         ...formData,
         crops: cropsInput.split(',').map(c => c.trim()).filter(c => c),
@@ -32,11 +33,12 @@ const Auth: React.FC<AuthProps> = ({ language, onRegister }) => {
   return (
     <div className="min-h-full flex flex-col p-2 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
       <div className="text-center space-y-3">
-        <div className="inline-flex p-5 bg-emerald-100 text-emerald-600 rounded-[2rem] shadow-inner">
+        <div className="inline-flex p-5 bg-emerald-100 text-emerald-600 rounded-[2rem] shadow-inner relative">
           <Sprout size={48} />
+          <Cloud size={16} className="absolute top-4 right-4 text-emerald-400" />
         </div>
         <h1 className="text-3xl font-bold text-slate-900 tracking-tight">{t.registerTitle}</h1>
-        <p className="text-sm text-slate-500 font-medium">Help us personalize your farming journey</p>
+        <p className="text-sm text-slate-500 font-medium">Your account will be securely saved to our cloud database.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -46,10 +48,11 @@ const Auth: React.FC<AuthProps> = ({ language, onRegister }) => {
           </label>
           <input
             required
+            disabled={isLoading}
             type="text"
             value={formData.name}
             onChange={e => setFormData({ ...formData, name: e.target.value })}
-            className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] py-4 px-6 text-slate-900 text-base focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:bg-white transition-all"
+            className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] py-4 px-6 text-slate-900 text-base focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:bg-white transition-all disabled:opacity-50"
             placeholder="e.g. Ramesh Kumar"
           />
         </div>
@@ -60,10 +63,11 @@ const Auth: React.FC<AuthProps> = ({ language, onRegister }) => {
           </label>
           <input
             required
+            disabled={isLoading}
             type="text"
             value={formData.location}
             onChange={e => setFormData({ ...formData, location: e.target.value })}
-            className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] py-4 px-6 text-slate-900 text-base focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:bg-white transition-all"
+            className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] py-4 px-6 text-slate-900 text-base focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:bg-white transition-all disabled:opacity-50"
             placeholder="e.g. Village, District"
           />
         </div>
@@ -74,10 +78,11 @@ const Auth: React.FC<AuthProps> = ({ language, onRegister }) => {
               <LandPlot size={14} /> {t.landSize}
             </label>
             <input
+              disabled={isLoading}
               type="number"
               value={formData.landSize}
               onChange={e => setFormData({ ...formData, landSize: e.target.value })}
-              className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] py-4 px-6 text-slate-900 text-base focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:bg-white transition-all"
+              className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] py-4 px-6 text-slate-900 text-base focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:bg-white transition-all disabled:opacity-50"
               placeholder="e.g. 5"
             />
           </div>
@@ -86,10 +91,11 @@ const Auth: React.FC<AuthProps> = ({ language, onRegister }) => {
               <Sprout size={14} /> Crops
             </label>
             <input
+              disabled={isLoading}
               type="text"
               value={cropsInput}
               onChange={e => setCropsInput(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] py-4 px-6 text-slate-900 text-base focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:bg-white transition-all"
+              className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] py-4 px-6 text-slate-900 text-base focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:bg-white transition-all disabled:opacity-50"
               placeholder="Rice, Wheat..."
             />
           </div>
@@ -97,9 +103,17 @@ const Auth: React.FC<AuthProps> = ({ language, onRegister }) => {
 
         <button
           type="submit"
-          className="w-full bg-emerald-600 text-white font-bold py-5 rounded-[2rem] mt-6 shadow-xl shadow-emerald-200 active:scale-[0.98] transition-all text-lg"
+          disabled={isLoading}
+          className="w-full bg-emerald-600 text-white font-bold py-5 rounded-[2rem] mt-6 shadow-xl shadow-emerald-200 active:scale-[0.98] transition-all text-lg flex items-center justify-center gap-3"
         >
-          {t.submit}
+          {isLoading ? (
+            <>
+              <Loader2 size={24} className="animate-spin" />
+              <span>Saving Details...</span>
+            </>
+          ) : (
+            t.submit
+          )}
         </button>
       </form>
     </div>

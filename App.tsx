@@ -12,6 +12,7 @@ import Schemes from './views/Schemes';
 import Onboarding from './views/Onboarding';
 import Auth from './views/Auth';
 import Settings from './views/Settings';
+import { MockBackend } from './services/api';
 
 const OPENWEATHER_API_KEY = "357a33c7ce3ea80e52cee9b7af1230f6";
 
@@ -21,6 +22,7 @@ const App: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [chatPrompt, setChatPrompt] = useState<string | undefined>(undefined);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: '1',
@@ -41,17 +43,23 @@ const App: React.FC = () => {
   ]);
 
   useEffect(() => {
-    // Load existing profile from localStorage
-    const savedProfile = localStorage.getItem('kisanSathiProfile');
-    const savedLang = localStorage.getItem('kisanSathiLang') as Language;
-    
-    if (savedProfile) {
-      setUserProfile(JSON.parse(savedProfile));
-      setView(AppView.DASHBOARD);
-    }
-    if (savedLang) {
-      setLanguage(savedLang);
-    }
+    const initApp = async () => {
+      setIsSyncing(true);
+      // Load existing profile from our Mock Backend
+      const profile = await MockBackend.getProfile();
+      const savedLang = localStorage.getItem('kisanSathiLang') as Language;
+      
+      if (profile) {
+        setUserProfile(profile);
+        setView(AppView.DASHBOARD);
+      }
+      if (savedLang) {
+        setLanguage(savedLang);
+      }
+      setIsSyncing(false);
+    };
+
+    initApp();
 
     // Request location for real weather
     if (navigator.geolocation) {
@@ -114,21 +122,19 @@ const App: React.FC = () => {
     }
   };
 
-  const handleRegister = (profile: UserProfile) => {
+  const handleRegister = async (profile: UserProfile) => {
+    setIsSyncing(true);
+    await MockBackend.saveProfile(profile);
     setUserProfile(profile);
-    localStorage.setItem('kisanSathiProfile', JSON.stringify(profile));
     setView(AppView.DASHBOARD);
+    setIsSyncing(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('kisanSathiProfile');
-    localStorage.removeItem('kisanSathiLang');
+  const handleLogout = async () => {
+    await MockBackend.clearProfile();
     setUserProfile(null);
     setView(AppView.ONBOARDING);
   };
-
-  if (view === AppView.ONBOARDING) return <Onboarding onSelectLanguage={handleLanguageSelect} />;
-  if (view === AppView.AUTH) return <Auth language={language} onRegister={handleRegister} />;
 
   const renderView = () => {
     switch (view) {
@@ -148,7 +154,12 @@ const App: React.FC = () => {
         return <Settings 
           language={language}
           userProfile={userProfile}
-          onUpdateProfile={(p) => { setUserProfile(p); localStorage.setItem('kisanSathiProfile', JSON.stringify(p)); }}
+          onUpdateProfile={async (p) => { 
+            setIsSyncing(true);
+            await MockBackend.saveProfile(p);
+            setUserProfile(p);
+            setIsSyncing(false);
+          }}
           onUpdateLanguage={handleLanguageSelect}
           onLogout={handleLogout}
           onBack={() => setView(AppView.DASHBOARD)}
@@ -159,9 +170,28 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout activeView={view} setActiveView={setView} language={language}>
-      {renderView()}
-    </Layout>
+    <div className="flex justify-center bg-slate-100 min-h-screen">
+      <div className="relative flex flex-col w-full max-w-lg h-[100dvh] bg-white sm:shadow-[0_0_50px_rgba(0,0,0,0.1)] overflow-hidden">
+        {view === AppView.ONBOARDING ? (
+          <Onboarding onSelectLanguage={handleLanguageSelect} />
+        ) : view === AppView.AUTH ? (
+          <div className="flex-1 overflow-y-auto pt-safe px-4 pt-4 pb-8 scrollbar-hide">
+            <Auth language={language} onRegister={handleRegister} isLoading={isSyncing} />
+          </div>
+        ) : (
+          <Layout activeView={view} setActiveView={setView} language={language}>
+            {/* Cloud Sync Status */}
+            {isSyncing && (
+              <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-lg border border-emerald-100 z-[200] flex items-center gap-2 animate-in fade-in zoom-in-95">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-700">Syncing with Backend...</span>
+              </div>
+            )}
+            {renderView()}
+          </Layout>
+        )}
+      </div>
+    </div>
   );
 };
 

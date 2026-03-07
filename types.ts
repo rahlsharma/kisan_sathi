@@ -74,6 +74,7 @@ export interface TranslationStrings {
     subtitle: string;
     sellTitle: string;
     buyTitle: string;
+    sellersTitle: string;
     listButton: string;
     pricePerUnit: string;
     quantity: string;

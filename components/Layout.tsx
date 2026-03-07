@@ -23,47 +23,39 @@ const Layout: React.FC<LayoutProps> = ({ children, activeView, setActiveView, la
   ];
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-slate-200 sm:p-4 lg:p-8">
-      {/* 
-        Responsive Container: 
-        - Full screen on mobile (w-full h-screen)
-        - Constrained and shadow on desktop (max-w-md sm:rounded-[3rem])
-      */}
-      <div className="relative flex flex-col w-full max-w-md h-[100dvh] sm:h-[850px] bg-white sm:rounded-[2.5rem] shadow-2xl overflow-hidden border-slate-100 sm:border-8 border-white">
-        
-        {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto pb-24 px-5 pt-8 scroll-smooth scrollbar-hide">
-          {children}
-        </main>
+    <>
+      {/* Header Spacer for Notch/Safe Area */}
+      <div className="pt-safe bg-white" />
 
-        {/* Bottom Navigation */}
-        <nav className="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex justify-around items-center py-4 px-2 safe-area-bottom shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeView === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveView(item.id)}
-                className={`flex flex-col items-center gap-1.5 min-w-[56px] transition-all duration-300 active:scale-90 ${
-                  isActive ? 'text-emerald-600' : 'text-slate-400'
-                }`}
-              >
-                <div className={`p-1.5 rounded-xl transition-colors ${isActive ? 'bg-emerald-50' : ''}`}>
-                  <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
-                </div>
-                <span className={`text-[10px] font-bold tracking-tight ${isActive ? 'opacity-100' : 'opacity-60'}`}>
-                  {item.label}
-                </span>
-                {isActive && (
-                  <div className="w-1 h-1 bg-emerald-600 rounded-full animate-pulse" />
-                )}
-              </button>
-            );
-          })}
-        </nav>
-      </div>
-    </div>
+      {/* Main Content Area */}
+      <main className="flex-1 overflow-y-auto px-4 pt-4 pb-32 scroll-smooth scrollbar-hide">
+        {children}
+      </main>
+
+      {/* Tactile Bottom Navigation */}
+      <nav className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-slate-100 flex justify-around items-end py-3 px-2 pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.06)] z-50">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeView === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveView(item.id)}
+              className={`flex flex-col items-center gap-1 min-w-[64px] pb-1 transition-all duration-300 active:scale-90 ${
+                isActive ? 'text-emerald-600' : 'text-slate-400'
+              }`}
+            >
+              <div className={`p-2.5 rounded-2xl transition-all duration-300 ${isActive ? 'bg-emerald-50 scale-110 shadow-sm' : ''}`}>
+                <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+              </div>
+              <span className={`text-[11px] font-bold tracking-tight transition-opacity ${isActive ? 'opacity-100' : 'opacity-60'}`}>
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
+    </>
   );
 };
 
